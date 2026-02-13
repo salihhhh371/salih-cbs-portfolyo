@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Salih Kaya | CBS & Veri Analizi Portfolyosu</title>
+    <meta name="description" content="Salih Kaya - Coğrafi Bilgi Sistemleri ve Veri Analizi Portfolyosu. Mekansal analiz projeleri ve haritalar.">
+    <meta name="author" content="Salih Kaya">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Salih Kaya | CBS & Veri Analizi Uzmanı">
+    <meta property="og:description" content="Mekânsal analiz projelerim, TÜBİTAK çalışmam ve dijital tasarım yeteneklerimi inceleyin.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-body: #050505;        
+            --bg-card: rgba(20, 20, 20, 0.6);
+            --primary-accent: #3b82f6; 
+            --primary-glow: rgba(59, 130, 246, 0.5); 
+            --secondary-accent: #10b981; 
+            --text-main: #ffffff;
+            --text-muted: #a3a3a3;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --transition: all 0.3s ease-out;
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-body); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-accent); border-radius: 4px; }
+        ::-selection { background: var(--primary-accent); color: white; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; cursor: none; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-muted);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* --- Particles Background --- */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background-image: radial-gradient(circle at 50% 50%, rgba(20, 30, 50, 0.5), #000);
+            pointer-events: none;
+        }
+
+        /* --- PERFORMANCE CURSOR --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; 
+            left: 0;
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+            will-change: transform; 
+        }
+
+        .cursor-dot { 
+            width: 8px; 
+            height: 8px; 
+            background-color: var(--primary-accent); 
+            transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+        }
+
+        .cursor-outline { 
+            width: 40px; 
+            height: 40px; 
+            border: 1px solid var(--primary-accent); 
+            transform: translate3d(-100px, -100px, 0) translate(-50%, -50%);
+            transition: width 0.1s, height 0.1s, background-color 0.1s;
+        }
+        
+        body:hover .cursor-outline.hovered {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(59, 130, 246, 0.15);
+            border-color: transparent;
+        }
+
+        /* --- Preloader --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* --- Header --- */
+        header {
+            background: rgba(5, 5, 5, 0.85);
+            backdrop-filter: blur(5px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        nav { max-width: 1200px; margin: 0 auto; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text-main); font-weight: 700; text-decoration: none; }
+        .logo span { color: var(--primary-accent); }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-muted); font-weight: 500; transition: color 0.3s; position: relative; }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
+            background-color: var(--primary-accent); transition: width 0.3s;
+        }
+        .nav-links a:hover { color: var(--text-main); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* --- Mobile Menu Toggle --- */
+        .menu-toggle { display: none; font-size: 1.8rem; color: var(--text-main); cursor: pointer; }
+
+        /* --- Hero --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            position: relative;
+        }
+        .hero h1 {
+            font-size: 4.5rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+        .hero .subtitle-wrapper {
+            font-size: 1.5rem;
+            color: var(--primary-accent);
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            min-height: 40px;
+        }
+
+        .btn {
+            padding: 1rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s;
+            background: linear-gradient(90deg, var(--primary-accent), #2563eb);
+            color: white;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn:hover { transform: translateY(-3px); }
+
+        .hero-badges { display: flex; gap: 2rem; margin-top: 4rem; flex-wrap: wrap; justify-content: center; }
+        .hero-badge-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            padding: 1rem 1.5rem;
+            border-radius: 15px;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .hero-badge-item:hover { background: rgba(255, 255, 255, 0.1); transform: translateY(-5px); border-color: var(--primary-accent); }
+        .hero-badge-item i { font-size: 1.5rem; color: var(--primary-accent); margin-bottom: 0.5rem; display: block; }
+
+        /* --- Sections & Cards --- */
+        section { padding: 100px 2rem; max-width: 1200px; margin: 0 auto; }
+        .section-title { font-size: 2.5rem; color: var(--text-main); margin-bottom: 4rem; display: flex; align-items: center; gap: 1rem; }
+        .section-title::before { content: ''; display: block; width: 5px; height: 50px; background: var(--primary-accent); border-radius: 5px; }
+
+        .card {
+            background: #111;
+            border: 1px solid var(--glass-border);
+            padding: 2.5rem;
+            border-radius: 20px;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            will-change: transform;
+        }
+        
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .skill-list li { list-style: none; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; }
+        .skill-list li i { color: var(--secondary-accent); }
+
+        /* --- GÜNCELLENMİŞ GALERİ STİLİ (TAM BOYUT) --- */
+        .gallery-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6rem; /* Haritalar arası boşluk */
+        }
+        
+        .gallery-full-item {
+            position: relative;
+            width: 100%;
+            border-radius: 25px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            background: #000;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: auto;
+            min-height: 600px; /* Minimum yükseklik garantisi */
+            max-height: 85vh; /* Ekranın %85'ini kaplasın */
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.8s ease;
+        }
+
+        .gallery-full-item:hover .gallery-img {
+            transform: scale(1.02); /* Hafif zoom efekti */
+        }
+
+        .gallery-info {
+            padding: 2rem;
+            background: linear-gradient(to top, #000000, rgba(0,0,0,0.8), transparent);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .gallery-title {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .gallery-tag {
+            font-size: 1rem;
+            color: var(--primary-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: inline-block;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 5px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 10001;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+        
+        #lightbox img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 5px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            animation: zoomIn 0.3s ease;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* TÜBİTAK Project Style */
+        .tubitak-wrapper {
+            background: #0f0f0f;
+            border: 1px solid #333;
+            border-radius: 30px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            transform-style: preserve-3d;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+        .tubitak-wrapper:hover { border-color: var(--secondary-accent); }
+        
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(16, 185, 129, 0.1); color: var(--secondary-accent);
+            padding: 8px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 700;
+            border: 1px solid rgba(16, 185, 129, 0.3); margin-bottom: 1.5rem;
+        }
+        .status-dot { width: 8px; height: 8px; background-color: var(--secondary-accent); border-radius: 50%; box-shadow: 0 0 10px var(--secondary-accent); animation: pulse 2s infinite; }
+        
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 2rem; }
+        .stat-item h4 { font-size: 2.5rem; color: var(--text-main); background: linear-gradient(to bottom, #fff, #aaa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* --- CONTACT SECTION --- */
+        .contact-grid { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        
+        .contact-info-card {
+            background: var(--bg-card); 
+            border: 1px solid var(--glass-border);
+            padding: 3rem; 
+            border-radius: 20px; 
+            text-align: center; 
+            flex: 1; 
+            min-width: 300px; 
+            max-width: 400px;
+            text-decoration: none;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .contact-icon-circle {
+            width: 70px; height: 70px; background: rgba(59, 130, 246, 0.1);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 1.5rem; color: var(--primary-accent); font-size: 1.8rem;
+            transition: var(--transition);
+        }
+        
+        .contact-info-card h3 { color: #ffffff; font-size: 1.4rem; margin-bottom: 1rem; }
+        .contact-info-card p { color: #f0f0f0; font-size: 1.1rem; font-weight: 500; letter-spacing: 0.5px; }
+        .contact-info-card:hover { border-color: var(--primary-accent); transform: translateY(-5px); }
+        .contact-info-card:hover .contact-icon-circle { transform: scale(1.1); }
+
+        /* Footer */
+        footer { text-align: center; padding: 2rem; border-top: 1px solid var(--glass-border); font-size: 0.9rem; margin-top: 4rem; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- Mobile Responsive --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .cursor-dot, .cursor-outline { display: none !important; }
+            .gallery-img { min-height: 300px; max-height: 500px; } /* Mobil için harita boyutu ayarı */
+            section { padding: 60px 1.5rem; }
+            
+            .menu-toggle { display: block; }
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #050505;
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+                padding: 2rem 0;
+                border-bottom: 1px solid var(--glass-border);
+                transform: translateY(-20px);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.3s ease;
+                display: flex;
+                clip-path: inset(0 0 100% 0);
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+                clip-path: inset(0 0 0 0);
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Büyük Harita">
+    </div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div id="particles-js"></div>
+
+    <header>
+        <nav>
+            <a href="#" class="logo" data-hover>Salih<span>KAYA</span></a>
+            
+            <div class="menu-toggle" data-hover>
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="#hakkimda" data-hover>Profil</a></li>
+                <li><a href="#yetkinlikler" data-hover>Yetenekler</a></li>
+                <li><a href="#projeler" data-hover>Projeler</a></li>
+                <li><a href="#galeri" data-hover>Galeri</a></li> 
+                <li><a href="#iletisim" data-hover>İletişim</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Salih Kaya</h1>
+        <div class="subtitle-wrapper">
+            <span id="typed-text"></span>
+        </div>
+        
+        <a href="#projeler" class="btn" data-hover>Projelerimi Keşfet</a>
+
+        <div class="hero-badges reveal">
+            <div class="hero-badge-item" data-tilt>
+                <i class="fas fa-university"></i>
+                <div>Sakarya Üniversitesi</div>
+            </div>
+            <div class="hero-badge-item" data-tilt>
+                <i class="fas fa-chart-line"></i>
+                <div>GNO: 3.63</div>
+            </div>
+            <div class="hero-badge-item" data-tilt>
+                <i class="fas fa-map-marked-alt"></i>
+                <div>CBS Uzman Adayı</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hakkimda" class="reveal">
+        <h2 class="section-title">Akademik Profil</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; align-items: start;">
+            <div class="card" data-tilt data-tilt-max="5" style="border-left: 4px solid var(--primary-accent);">
+                <p style="margin-bottom: 1.5rem;">
+                    Sakarya Üniversitesi Coğrafya Bölümü öğrencisiyim. <strong>3.63</strong> genel not ortalaması ile akademik başarıyı hedeflerken, kendimi Coğrafi Bilgi Sistemleri (CBS) ve veri analizi alanlarında profesyonelleştiriyorum.
+                </p>
+                <p>
+                    Hedefim; teorik coğrafya bilgisini modern teknolojilerle birleştirerek, belediyecilik ve şehir planlama alanlarında sürdürülebilir, veriye dayalı çözümler üretmektir.
+                </p>
+            </div>
+            <div>
+                <h3 style="color:white; margin-bottom:1.5rem;">İlgi Alanları</h3>
+                <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                    <span class="hero-badge-item" style="padding: 8px 15px; font-size:0.9rem;">Şehir Planlama</span>
+                    <span class="hero-badge-item" style="padding: 8px 15px; font-size:0.9rem;">Mekânsal Analiz</span>
+                    <span class="hero-badge-item" style="padding: 8px 15px; font-size:0.9rem;">Dijital Haritalar</span>
+                    <span class="hero-badge-item" style="padding: 8px 15px; font-size:0.9rem;">Yapay Zeka & Video</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="yetkinlikler" class="reveal">
+        <h2 class="section-title">Teknik Yetkinlikler</h2>
+        <div class="skills-grid">
+            <div class="card" data-tilt>
+                <i class="fas fa-globe-europe" style="font-size: 2.5rem; color: var(--primary-accent); margin-bottom: 1.5rem;"></i>
+                <h3 style="color:white; margin-bottom:1rem;">CBS & Haritalandırma</h3>
+                <ul class="skill-list">
+                    <li><i class="fas fa-check-circle"></i> ArcGIS (Orta-İleri Seviye)</li>
+                    <li><i class="fas fa-check-circle"></i> Katman Yönetimi & Görselleştirme</li>
+                    <li><i class="fas fa-check-circle"></i> Tematik Harita (Choropleth)</li>
+                    <li><i class="fas fa-check-circle"></i> Kernel Density Analizleri</li>
+                </ul>
+            </div>
+
+            <div class="card" data-tilt>
+                <i class="fas fa-chart-pie" style="font-size: 2.5rem; color: #a855f7; margin-bottom: 1.5rem;"></i>
+                <h3 style="color:white; margin-bottom:1rem;">Veri Analizi</h3>
+                <ul class="skill-list">
+                    <li><i class="fas fa-check-circle"></i> SPSS (Temel-Orta Seviye)</li>
+                    <li><i class="fas fa-check-circle"></i> Korelasyon & Regresyon</li>
+                    <li><i class="fas fa-check-circle"></i> Anket Verisi Analizi</li>
+                    <li><i class="fas fa-check-circle"></i> Excel (Temel-Orta Seviye)</li>
+                </ul>
+            </div>
+
+            <div class="card" data-tilt>
+                <i class="fas fa-laptop-code" style="font-size: 2.5rem; color: var(--secondary-accent); margin-bottom: 1.5rem;"></i>
+                <h3 style="color:white; margin-bottom:1rem;">Dijital & Sunum</h3>
+                <ul class="skill-list">
+                    <li><i class="fas fa-check-circle"></i> AI Destekli İçerik Üretimi</li>
+                    <li><i class="fas fa-check-circle"></i> 3D PowerPoint Tasarımı</li>
+                    <li><i class="fas fa-check-circle"></i> CapCut & Video Kurgu</li>
+                    <li><i class="fas fa-check-circle"></i> Profesyonel Raporlama</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="projeler" class="reveal">
+        <h2 class="section-title">Araştırma & Projeler</h2>
+        
+        <div class="tubitak-wrapper" data-tilt data-tilt-glare data-tilt-max-glare="0.1">
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                Başvuru Onay Aşamasında
+            </div>
+            
+            <h2 style="font-size: 2rem; color:white; margin-bottom: 0.5rem;">TÜBİTAK 2209-A Araştırma Projesi</h2>
+            <h3 style="font-size: 1.1rem; color:var(--text-muted); font-weight:400; margin-bottom: 2rem;">
+                "İnternet Kalitesi Algısının Mekân Tercihleri ve Harcamalara Etkisi: Sakarya Örneği"
+            </h3>
+            
+            <p style="margin-bottom: 2rem; max-width: 800px; color: #d4d4d4;">
+                Bu araştırma, "üçüncü mekân" olarak adlandırılan kafelerde sunulan internet hizmet kalitesinin, kullanıcıların mekân tercihleri ve yeme-içme harcamaları üzerindeki etkisini analiz etmektedir. Proje, dijital altyapının yerel işletmelerin ekonomisine etkisini mekânsal yöntemlerle ölçmeyi hedefler.
+            </p>
+
+            <div class="stat-grid">
+                <div class="stat-item">
+                    <h4>400+</h4>
+                    <p>Katılımcı Anketi</p>
+                </div>
+                <div class="stat-item">
+                    <h4>CBS</h4>
+                    <p>Mekânsal Analiz</p>
+                </div>
+                <div class="stat-item">
+                    <h4>SPSS</h4>
+                    <p>İstatistiksel Veri</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tubitak-wrapper" style="margin-top: 3rem;" data-tilt data-tilt-max="3" data-tilt-speed="1000" data-tilt-glare data-tilt-max-glare="0.05">
+            <div class="status-badge" style="background: rgba(168, 85, 247, 0.1); color: #a855f7; border-color: rgba(168, 85, 247, 0.3);">
+                <i class="fas fa-database" style="margin-right: 8px;"></i>
+                Veri Tabanı & İstatistik
+            </div>
+            
+            <h2 style="font-size: 2rem; color:white; margin-bottom: 0.5rem;">Edebiyat Coğrafyasında Veri Madenciliği</h2>
+            <h3 style="font-size: 1.1rem; color:var(--text-muted); font-weight:400; margin-bottom: 2rem;">
+                Microsoft Access & Excel ile İstatistiksel Modelleme
+            </h3>
+        
+            <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;">
+                <div style="flex: 1; min-width: 300px;">
+                    <p style="margin-bottom: 1.5rem; color: #d4d4d4; line-height: 1.6;">
+                        Bu çalışmada, "Yağmur Beklerken" romanındaki coğrafi ve demografik veriler yapılandırılmamış metin formatından çıkarılarak dijital veri tabanına işlenmiştir. 
+                        <strong>Microsoft Access</strong> kullanılarak ilişkisel veri tabanı oluşturulmuş, <strong>Excel</strong> ile yaş ve cinsiyet dağılımı gibi demografik analizler görselleştirilmiştir.
+                    </p>
+                    
+                    <ul class="skill-list" style="margin-bottom: 2rem;">
+                        <li><i class="fas fa-table" style="color: #a855f7;"></i> Ham Verinin Sınıflandırılması (Taxonomy)</li>
+                        <li><i class="fas fa-chart-pie" style="color: #a855f7;"></i> Demografik & Mekânsal İstatistikler</li>
+                        <li><i class="fas fa-project-diagram" style="color: #a855f7;"></i> Veri Tabanı Mimarisi (Access)</li>
+                    </ul>
+
+                    <a href="veri-analizi-projesi.pdf" target="_blank" class="btn" style="padding: 0.8rem 2rem; font-size: 0.9rem; background: linear-gradient(90deg, #a855f7, #7c3aed);">
+                        <i class="fas fa-file-pdf" style="margin-right: 8px;"></i>
+                        Analiz Raporunu İncele
+                    </a>
+                </div>
+
+                <div style="flex: 1; min-width: 300px;">
+                    <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 15px; border: 1px solid var(--glass-border); text-align: center;">
+                        <i class="fas fa-chart-bar" style="font-size: 4rem; color: #a855f7; margin-bottom: 1rem; opacity: 0.8;"></i>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">
+                            Veri Görselleştirme &<br>İstatistiksel Dağılım Grafikleri
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="galeri" class="reveal">
+        <h2 class="section-title">Mekânsal Analiz Portfolyosu</h2>
+        
+        <div class="gallery-container">
+            
+            <div class="gallery-full-item" onclick="openLightbox('NÜFUS.webp')">
+                <img src="NÜFUS.webp" alt="İstanbul Nüfus Yoğunluğu Haritası" class="gallery-img" loading="lazy">
+                <div class="gallery-info">
+                    <div class="gallery-tag">Demografik Analiz</div>
+                    <div class="gallery-title">İstanbul Nüfus Yoğunluğu Haritası</div>
+                </div>
+            </div>
+
+            <div class="gallery-full-item" onclick="openLightbox('YÜKSELTİ.webp')">
+                <img src="YÜKSELTİ.webp" alt="İstanbul Yükselti Haritası" class="gallery-img" loading="lazy">
+                <div class="gallery-info">
+                    <div class="gallery-tag">Fiziki Coğrafya</div>
+                    <div class="gallery-title">İstanbul Fiziki & Yükselti Analizi</div>
+                </div>
+            </div>
+
+            <div class="gallery-full-item" onclick="openLightbox('hidro analiz.webp')">
+                <img src="hidro analiz.webp" alt="Sancaktepe Hidroloji Analizi" class="gallery-img" loading="lazy">
+                <div class="gallery-info">
+                    <div class="gallery-tag">Havza Yönetimi</div>
+                    <div class="gallery-title">Sancaktepe Hidroloji & Akarsu Analizi</div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="iletisim" class="reveal" style="margin-bottom: 5rem;">
+        <h2 class="section-title" style="justify-content: center;">İletişime Geçin</h2>
+        
+        <div class="contact-grid">
+            <a href="tel:05522814013" class="contact-info-card" data-tilt data-hover>
+                <div class="contact-icon-circle">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <h3>Telefon</h3>
+                <p>0552 281 40 13</p>
+            </a>
+
+            <a href="mailto:salih.kaya6@ogr.sakarya.edu.tr" class="contact-info-card" data-tilt data-hover>
+                <div class="contact-icon-circle">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Kurumsal E-Posta</h3>
+                <p>salih.kaya6@ogr.sakarya.edu.tr</p>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 Salih KAYA. Tüm hakları saklıdır. <br>
+        <span style="font-size:0.8rem; color:#666;">HTML, CSS & JS ile geliştirildi.</span>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+
+    <script>
+        // 1. OPTİMİZE EDİLMİŞ PRELOADER
+        document.addEventListener("DOMContentLoaded", () => {
+            const preloader = document.getElementById('preloader');
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 500);
+        });
+
+        // 2. ULTRA-LIGHT CURSOR
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        let mouseX = -100, mouseY = -100;
+        let outlineX = -100, outlineY = -100;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+        });
+
+        function animateCursor() {
+            outlineX += (mouseX - outlineX) * 0.2;
+            outlineY += (mouseY - outlineY) * 0.2;
+
+            cursorOutline.style.transform = `translate3d(${outlineX}px, ${outlineY}px, 0) translate(-50%, -50%)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Hover Efektleri
+        const hoverElements = document.querySelectorAll('[data-hover]');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursorOutline.classList.add('hovered');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursorOutline.classList.remove('hovered');
+            });
+        });
+
+        // 3. Typed.js
+        var typed = new Typed('#typed-text', {
+            strings: [
+                'Coğrafi Bilgi Sistemleri', 
+                'Veri Analizi & Görselleştirme', 
+                'Şehir Planlama Çözümleri',
+                'Akademik Araştırma'
+            ],
+            typeSpeed: 50,
+            backSpeed: 30,
+            backDelay: 2000,
+            loop: true
+        });
+
+        // 4. Vanilla Tilt
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
+            max: 10,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.1,
+            scale: 1.01
+        });
+
+        // 5. Particles.js
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 30, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#3b82f6" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.3, "random": false },
+                "size": { "value": 3, "random": true },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#3b82f6",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1.5,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": false },
+                    "onclick": { "enable": true, "mode": "push" },
+                    "resize": true
+                }
+            },
+            "retina_detect": false
+        });
+
+        // 6. Scroll Reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+        // 7. Lightbox & Menu
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imgSrc;
+            lightbox.style.display = 'flex';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = menuToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+    </script>
+
+</body>
+</html>
